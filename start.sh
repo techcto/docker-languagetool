@@ -20,12 +20,12 @@ do
 done
 
 if [ "$config_injected" = true ] ; then
-  echo 'The following configuration is passed to LanguageTool:'
-  cat config.properties
+  echo 'LanguageTool configuration was extended from langtool_* environment variables.'
 fi
 
 Xms=${Java_Xms:-256m}
 Xmx=${Java_Xmx:-512m}
+allow_origin=${LANGUAGETOOL_ALLOW_ORIGIN:-}
 
 PRIO_ARGS=(  
   "-Xms$Xms"
@@ -41,9 +41,12 @@ LT_ARGS=(
   org.languagetool.server.HTTPServer
   --port 8010
   --public
-  --allow-origin '*'
   --config config.properties
 )
+
+if [ -n "$allow_origin" ] ; then
+  LT_ARGS+=(--allow-origin "$allow_origin")
+fi
 
 set -x
 exec java "${PRIO_ARGS[@]}" "${LT_ARGS[@]}"

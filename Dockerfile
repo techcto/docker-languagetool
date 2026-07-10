@@ -20,17 +20,17 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         unzip \
         xmlstarlet
 
-# Install ARM64-specific packages (cached separately)
-RUN [ "$TARGETARCH" = "arm64" ] && \
-    --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get install -y --no-install-recommends \
-        build-essential \
-        cmake \
-        mercurial \
-        texlive \
-        wget \
-        zip || true
+# Install ARM64-specific packages.
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+        apt-get update -y && \
+        apt-get install -y --no-install-recommends \
+            build-essential \
+            cmake \
+            mercurial \
+            texlive \
+            wget \
+            zip; \
+    fi
 
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
     dpkg-reconfigure --frontend=noninteractive locales && \

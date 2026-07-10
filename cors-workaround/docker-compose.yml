@@ -1,9 +1,9 @@
 version: "3"
 services:
   languagetool:
-    image: erikvl87/languagetool
+    image: solodev/languagetool
     container_name: languagetool
-    ports:
+    expose:
       - "8010"
     environment:
       - langtool_languageModel=/ngrams  # OPTIONAL: Using ngrams data
@@ -15,4 +15,4 @@ services:
     build: nginx/.
     container_name: cors
     ports:
-      - "8081"
+      - "127.0.0.1:8081:8081"

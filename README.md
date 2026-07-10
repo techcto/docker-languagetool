@@ -1,5 +1,3 @@
-[![Build Status](https://github.com/Erikvl87/docker-languagetool/workflows/Build/badge.svg)](https://github.com/Erikvl87/docker-languagetool) [![Tests Status](https://github.com/Erikvl87/docker-languagetool/workflows/Tests/badge.svg)](https://github.com/Erikvl87/docker-languagetool) [![Docker Pulls](https://img.shields.io/docker/pulls/erikvl87/languagetool)](https://hub.docker.com/r/erikvl87/languagetool) [![Latest GitHub tag](https://img.shields.io/github/v/tag/Erikvl87/docker-languagetool?label=GitHub%20tag)](https://github.com/Erikvl87/docker-languagetool/releases) 
- 
 # Dockerfile for LanguageTool 
 This repository contains a Dockerfile to create a Docker image for [LanguageTool](https://github.com/languagetool-org/languagetool). 
  
@@ -10,19 +8,19 @@ This repository contains a Dockerfile to create a Docker image for [LanguageTool
 ## Setup using Docker Hub 
  
 ```sh 
-docker pull erikvl87/languagetool 
-docker run --rm -p 8010:8010 erikvl87/languagetool 
+docker pull solodev/languagetool 
+docker run --rm -p 127.0.0.1:8010:8010 solodev/languagetool 
 ``` 
  
-This will pull the `latest` tag from Docker Hub. Optionally, specify a [tag](https://hub.docker.com/r/erikvl87/languagetool/tags) to pin onto a fixed version. These versions are derived from the official LanguageTool releases. Updates to the Dockerfile for already published versions are released with a `-dockerupdate-{X}` postfix in the tag (where `{X}` is an incremental number). 
+This will pull the `latest` tag from Docker Hub. Optionally, specify a release tag to pin onto a fixed Solodev image build. These versions are derived from the official LanguageTool releases. 
  
 ## Setup using the Dockerfile 
 This approach could be used when you plan to make changes to the `Dockerfile`. 
  
 ```sh 
-git clone https://github.com/Erikvl87/docker-languagetool.git --config core.autocrlf=input 
+git clone https://github.com/techcto/docker-languagetool.git --config core.autocrlf=input 
 docker build -t languagetool . 
-docker run --rm -it -p 8010:8010 languagetool 
+docker run --rm -it -p 127.0.0.1:8010:8010 languagetool 
 ``` 
  
 # Configuration 
@@ -33,7 +31,7 @@ LanguageTool will be started with a minimal heap size (`-Xms`) of `256m` and a m
 An example startup configuration: 
  
 ```sh 
-docker run --rm -it -p 8010:8010 -e Java_Xms=512m -e Java_Xmx=2g erikvl87/languagetool 
+docker run --rm -it -p 127.0.0.1:8010:8010 -e Java_Xms=512m -e Java_Xmx=2g solodev/languagetool 
 ``` 
  
 ## LanguageTool HTTPServerConfig 
@@ -42,7 +40,7 @@ You are able to use the [HTTPServerConfig](https://languagetool.org/development/
 An example startup configuration: 
  
 ```sh 
-docker run --rm -it -p 8010:8010 -e langtool_pipelinePrewarming=true -e Java_Xms=1g -e Java_Xmx=2g erikvl87/languagetool 
+docker run --rm -it -p 127.0.0.1:8010:8010 -e langtool_pipelinePrewarming=true -e Java_Xms=1g -e Java_Xmx=2g solodev/languagetool 
 ``` 
  
 ## FastText support 
@@ -62,7 +60,7 @@ For example, create the following `logback.xml` file:
 An example startup configuration: 
  
 ```sh 
-docker run --rm -it -p 8010:8010 -v /home/john/logback.xml:/LanguageTool/logback.xml erikvl87/languagetool 
+docker run --rm -it -p 127.0.0.1:8010:8010 -v /home/john/logback.xml:/LanguageTool/logback.xml solodev/languagetool 
 ``` 
  
  
@@ -92,7 +90,7 @@ Mount the local ngrams directory to the `/ngrams` directory in the Docker contai
 An example startup configuration: 
  
 ```sh 
-docker run --rm -it -p 8010:8010 -e langtool_languageModel=/ngrams -v /home/john/ngrams:/ngrams:ro erikvl87/languagetool 
+docker run --rm -it -p 127.0.0.1:8010:8010 -e langtool_languageModel=/ngrams -v /home/john/ngrams:/ngrams:ro solodev/languagetool 
 ``` 
  
 ## Improving the spell checker 
@@ -107,7 +105,7 @@ docker run --rm -it -p 8010:8010 -e langtool_languageModel=/ngrams -v /home/john
 The following `Dockerfile` contains an example on how to add words to `spelling.txt`. It assumes you have your own list of words in `en_spelling_additions.txt` next to the `Dockerfile`. 
  
 ```dockerfile 
-FROM erikvl87/languagetool 
+FROM solodev/languagetool 
  
 # Improving the spell checker 
 # http://wiki.languagetool.org/hunspell-support 

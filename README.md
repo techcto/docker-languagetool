@@ -124,9 +124,25 @@ docker run --rm -it -p 8010:8010 languagetool-custom
  
 You can add words to other languages by changing the `en` language tag in the target path. Note that for some languages, e.g. for `nl` the `spelling.txt` file is not in the `hunspell` folder: `org/languagetool/resource/nl/spelling/spelling.txt`. 
  
-# Docker Compose 
- 
-This image can also be used with [Docker Compose](https://docs.docker.com/compose/). An example [`docker-compose.yml`](docker-compose.yml) is located at the root of this project. 
+# Docker Compose
+
+This image can also be used with [Docker Compose](https://docs.docker.com/compose/). An example [`docker-compose.yml`](docker-compose.yml) is located at the root of this project.
+
+## Publishing releases
+
+The `Publish Docker image` GitHub Actions workflow publishes multi-platform
+`linux/amd64` and `linux/arm64` images to `techcto/languagetool`. Create that
+Docker Hub repository as **Public**, then configure these settings in this
+GitHub repository:
+
+- Repository variable `DOCKERHUB_USERNAME`: the Docker Hub account that can
+  push to the `techcto` organization.
+- Repository secret `DOCKERHUB_TOKEN`: a Docker Hub personal access token with
+  read/write permission for the repository.
+
+Push a version tag such as `v6.7.0` to publish `6.7.0` and `latest`, or run the
+workflow manually and provide an image version. Use immutable version tags in
+production deployments.
  
 # Usage 
 By default this image is configured to listen on port 8010 which deviates from the default port of LanguageTool 8081. 

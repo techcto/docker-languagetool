@@ -1,7 +1,3 @@
----
-
-version: "3"
-
 services:
   languagetool:
     image: solodev/languagetool

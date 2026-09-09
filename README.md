@@ -140,9 +140,17 @@ GitHub repository:
 - Repository secret `DOCKERHUB_TOKEN`: a Docker Hub personal access token with
   read/write permission for the repository.
 
-Push a version tag such as `v6.7.0` to publish `6.7.0` and `latest`, or run the
+Push a version tag such as `v6.8.0` to publish `6.8.0` and `latest`, or run the
 workflow manually and provide an image version. Use immutable version tags in
 production deployments.
+
+## Maintaining the fork
+
+This repository is a fork of
+[`Erikvl87/docker-languagetool`](https://github.com/Erikvl87/docker-languagetool).
+The included `cmd.sh` provides guarded commands for comparing and merging its
+`main` branch, committing changes, pushing branches, and optionally opening a
+pull request with GitHub CLI. Run `./cmd.sh help` for the complete workflow.
  
 # Usage 
 By default this image is configured to listen on port 8010 which deviates from the default port of LanguageTool 8081. 

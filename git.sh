@@ -22,7 +22,7 @@ die() {
 
 repo() {
   git -C "$ROOT_DIR" rev-parse --is-inside-work-tree >/dev/null 2>&1 ||
-    die "Run this script inside the OpenADA repository."
+    die "Run this script inside a Git repository."
 }
 
 status() {
@@ -31,14 +31,18 @@ status() {
 }
 
 audit() {
-  local files matches
-  files="$({
-    git -C "$ROOT_DIR" status --porcelain --untracked-files=all | sed -n 's/^?? //p'
-    git -C "$ROOT_DIR" ls-files
-  } | sort -u | grep -v '^git.sh$' || true)"
+  local file result status matches=''
+  local pattern='osirus|appstudio|app studio|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
 
-  matches="$(printf '%s\n' "$files" | xargs -r rg -n -i \
-    'osirus|appstudio|app studio|AKIA[0-9A-Z]{16}|ASIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|-----BEGIN [A-Z ]*PRIVATE KEY-----' || true)"
+  while IFS= read -r -d '' file; do
+    [[ "$file" == 'git.sh' || ! -f "$ROOT_DIR/$file" ]] && continue
+    if result="$(grep -IEni -- "$pattern" "$ROOT_DIR/$file")"; then
+      matches+="${result}"$'\n'
+    else
+      status=$?
+      [[ "$status" == 1 ]] || die "Audit could not read $file."
+    fi
+  done < <(git -C "$ROOT_DIR" ls-files --cached --others --exclude-standard -z)
 
   if [[ -n "$matches" ]]; then
     printf '%s\n' "$matches"
@@ -59,7 +63,9 @@ tag() {
   git -C "$ROOT_DIR" rev-parse --verify --quiet "refs/tags/v${version}" >/dev/null &&
     die "Tag v${version} already exists."
   audit
-  git -C "$ROOT_DIR" tag -a "v${version}" -m "OpenADA ${version}"
+  local repository_name
+  repository_name="$(basename "$(git -C "$ROOT_DIR" rev-parse --show-toplevel)")"
+  git -C "$ROOT_DIR" tag -a "v${version}" -m "${repository_name} ${version}"
   git -C "$ROOT_DIR" push "$REMOTE" "refs/tags/v${version}"
 }
 

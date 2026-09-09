@@ -15,7 +15,9 @@ docker run --rm -p 127.0.0.1:8010:8010 solodev/languagetool
 This will pull the `latest` tag from Docker Hub. Optionally, specify a release tag to pin onto a fixed Solodev image build. These versions are derived from the official LanguageTool releases. 
  
 ## Setup using the Dockerfile 
-This approach could be used when you plan to make changes to the `Dockerfile`. 
+This approach can be used when you plan to change the hardened OpenADA runtime
+layer. The image extends the pinned upstream LanguageTool 6.8 image and replaces
+only its startup script; it does not recompile the full Java project.
  
 ```sh 
 git clone https://github.com/techcto/docker-languagetool.git --config core.autocrlf=input 

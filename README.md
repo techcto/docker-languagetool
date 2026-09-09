@@ -130,8 +130,8 @@ This image can also be used with [Docker Compose](https://docs.docker.com/compos
 
 ## Publishing releases
 
-The `Publish Docker image` GitHub Actions workflow publishes multi-platform
-`linux/amd64` and `linux/arm64` images to `techcto/languagetool`. Create that
+The `Publish Docker image` GitHub Actions workflow publishes a native
+`linux/amd64` image to `techcto/languagetool` for OpenADA's Fargate service. Create that
 Docker Hub repository as **Public**, then configure these settings in this
 GitHub repository:
 

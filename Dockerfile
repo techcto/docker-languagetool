@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-ARG LANGUAGETOOL_VERSION=6.7
+ARG LANGUAGETOOL_VERSION=6.8
 ARG TARGETARCH
 
 FROM debian:bookworm AS build
@@ -63,7 +63,7 @@ RUN if [ "$TARGETARCH" = "arm64" ]; then \
 
 WORKDIR /languagetool
 
-FROM alpine:3.23.4
+FROM alpine:3.24.0
 
 ARG TARGETARCH
 
